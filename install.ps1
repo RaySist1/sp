@@ -1,7 +1,7 @@
 param (
   [Parameter()]
   [switch]
-  $UninstallSpotifyStoreEdition = (Read-Host -Prompt 'Slet nuværende Spotify (Y/N)') -eq 'y',
+  $UninstallSpotifyStoreEdition = (Read-Host -Prompt 'Slet Microsoft Store Spotify (Y/N)') -eq 'y',
   [Parameter()]
   [switch]
   $UpdateSpotify
@@ -104,7 +104,7 @@ function Test-SpotifyVersion
 
 Write-Host @'
 **********************************
-Authors: @Ray Sist
+Author: @Ray Sist
 **********************************
 '@
 
@@ -114,7 +114,7 @@ $spotifyApps = Join-Path -Path $spotifyDirectory -ChildPath 'Apps'
 
 [System.Version] $actualSpotifyClientVersion = (Get-ChildItem -LiteralPath $spotifyExecutable -ErrorAction:SilentlyContinue).VersionInfo.ProductVersionRaw
 
-Write-Host "Stopping Spotify...`n"
+Write-Host "Stopper Spotify...`n"
 Stop-Process -Name Spotify
 Stop-Process -Name SpotifyWebHelper
 
@@ -172,7 +172,7 @@ if (-not $UpdateSpotify -and $unsupportedClientVersion)
 
 if (-not $spotifyInstalled -or $UpdateSpotify -or $unsupportedClientVersion)
 {
-  Write-Host 'Downloading the latest Spotify full setup, please wait...'
+  Write-Host 'Downloader seneste version af Spotify...'
   $spotifySetupFilePath = Join-Path -Path $PWD -ChildPath 'SpotifyFullSetup.exe'
   try
   {
@@ -260,7 +260,7 @@ catch
 Expand-Archive -Force -LiteralPath "$elfPath" -DestinationPath $PWD
 Remove-Item -LiteralPath "$elfPath" -Force
 
-Write-Host 'Patching Spotify...'
+Write-Host 'Tilføjer Premium...'
 $patchFiles = (Join-Path -Path $PWD -ChildPath 'dpapi.dll'), (Join-Path -Path $PWD -ChildPath 'config.ini')
 
 Copy-Item -LiteralPath $patchFiles -Destination "$spotifyDirectory"
@@ -295,7 +295,7 @@ Pop-Location
 
 Remove-Item -LiteralPath $tempDirectory -Recurse
 
-Write-Host 'Patching Complete, starting Spotify...'
+Write-Host 'Premium tilføjet, starter Spotify...'
 
 Start-Process -WorkingDirectory $spotifyDirectory -FilePath $spotifyExecutable
-Write-Host 'Done.'
+Write-Host 'Færdig.'
