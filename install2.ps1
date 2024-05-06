@@ -1,7 +1,7 @@
 param (
   [Parameter()]
   [switch]
-  $UninstallSpotifyStoreEdition = (Read-Host -Prompt 'Slet Microsoft Store Spotify (Y/N)') -eq 'y',
+  $UninstallSpotifyStoreEdition = (Read-Host -Prompt 'Slet Spotify (Y/N)') -eq 'y',
   [Parameter()]
   [switch]
   $UpdateSpotify
@@ -125,11 +125,11 @@ if ($PSVersionTable.PSVersion.Major -ge 7)
 
 if (Get-AppxPackage -Name SpotifyAB.SpotifyMusic)
 {
-  Write-Host "The Microsoft Store version of Spotify has been detected which is not supported.`n"
+  Write-Host "Microsoft Store version af Spotify er detected, dette er ikke supported.`n"
 
   if ($UninstallSpotifyStoreEdition)
   {
-    Write-Host "Uninstalling Spotify.`n"
+    Write-Host "Sletter Spotify.`n"
     Get-AppxPackage -Name SpotifyAB.SpotifyMusic | Remove-AppxPackage
   }
   else
@@ -260,7 +260,7 @@ catch
 Expand-Archive -Force -LiteralPath "$elfPath" -DestinationPath $PWD
 Remove-Item -LiteralPath "$elfPath" -Force
 
-Write-Host 'Tilføjer Premium...'
+Write-Host 'Adder Premium...'
 $patchFiles = (Join-Path -Path $PWD -ChildPath 'dpapi.dll'), (Join-Path -Path $PWD -ChildPath 'config.ini')
 
 Copy-Item -LiteralPath $patchFiles -Destination "$spotifyDirectory"
@@ -295,7 +295,7 @@ Pop-Location
 
 Remove-Item -LiteralPath $tempDirectory -Recurse
 
-Write-Host 'Premium tilføjet, starter Spotify...'
+Write-Host 'Premium added, starter Spotify...'
 
 Start-Process -WorkingDirectory $spotifyDirectory -FilePath $spotifyExecutable
-Write-Host 'Færdig.'
+Write-Host 'Done.'
